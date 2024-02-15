@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
 import * as Location from "expo-location";
+import { Fontisto } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
-  const [location, setLocation] = useState();
   const [ok, setOk] = useState(true);
-  const [city, setCity] = useState("Loading...")
+  const [city, setCity] = useState("Loading...");
+  // const [days, setDays] = useState([])
 
-  const getPermmisions = async () => {
+  const getWeather = async () => {
     // 권한 요청 - 거부 시
     const { granted } = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
@@ -24,11 +25,11 @@ export default function App() {
       { latitude, longitude },
       { useGoogleMaps: false }
     );
-    setCity(location[0].city)
+    setCity(location[0].city);
   };
 
   useEffect(() => {
-    getPermmisions();
+    getWeather();
   }, []);
   return (
     <View style={styles.container}>
@@ -42,11 +43,31 @@ export default function App() {
         contentContainerStyle={styles.weather}
       >
         <View style={styles.day}>
-          <Text style={styles.temp}>27</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Text style={styles.temp}>27</Text>
+            <Fontisto name="cloudy" size={48} color="white" />
+          </View>
           <Text style={styles.description}>Sunny</Text>
         </View>
         <View style={styles.day}>
-          <Text style={styles.temp}>17</Text>
+        <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Text style={styles.temp}>17</Text>
+            <Fontisto name="day-sunny" size={48} color="white" />
+          </View>
           <Text style={styles.description}>Rainy</Text>
         </View>
         <View style={styles.day}>
@@ -84,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   temp: {
-    fontSize: 168,
+    fontSize: 100,
     marginTop: 50,
   },
   description: {
